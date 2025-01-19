@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated Shapes</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #f0f0f0;
+            font-family: sans-serif;
+        }
+
+        .shape {
+            position: absolute;
+            opacity: 0;
+            animation: fadeShape 6s ease-in-out infinite, moveShape 6s ease-in-out infinite;
+        }
+
+        .heart { width: 30px; height: 30px; background-color: #ff416c; clip-path: polygon(50% 0%, 100% 35%, 85% 100%, 50% 85%, 15% 100%, 0% 35%); }
+        .star { width: 30px; height: 30px; background-color: #ffd700; clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 98% 80%, 50% 68%, 2% 80%, 32% 57%, 2% 35%, 39% 35%); }
+        .diamond { width: 30px; height: 30px; background-color: #00ffff; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); }
+        .circle { width: 30px; height: 30px; background-color: #0000ff; border-radius: 50%; }
+        .square { width: 30px; height: 30px; background-color: #008000; }
+        .triangle { width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent; border-bottom: 30px solid #800080; }
+
+        @keyframes fadeShape { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
+        @keyframes moveShape {
+            0% { transform: translate(0, 0); opacity: 0; }
+            50% { transform: translate(var(--randomX), var(--randomY)); opacity: 1; }
+            100% { transform: translate(0, 0); opacity: 0; }
+        }
+
+        .text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 25px;
+            font-weight: bold;
+            color: #ff416c;
+            animation: fadeText 3s ease-in-out infinite;
+        }
+
+        @keyframes fadeText {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        .randomText {
+            position: absolute;
+            font-size: 20px;
+            font-weight: bold;
+            color: #ff416c;
+            animation: fadeRandomText 3s ease-in-out infinite;
+        }
+
+        @keyframes fadeRandomText {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="text">I'm so sorry baby</div>
+
+    <script>
+        function createShape(shapeType) {
+            const shape = document.createElement('div');
+            shape.classList.add('shape', shapeType);
+
+            const x = Math.random() * window.innerWidth - 30; // Adjusted for shape size
+            const y = Math.random() * window.innerHeight - 30; // Adjusted for shape size
+            const randomX = (Math.random() - 0.5) * 100 + 'px'; // Increased movement range
+            const randomY = (Math.random() - 0.5) * 100 + 'px'; // Increased movement range
+
+            shape.style.left = x + 'px';
+            shape.style.top = y + 'px';
+            shape.style.setProperty('--randomX', randomX);
+            shape.style.setProperty('--randomY', randomY);
+            shape.style.animation = `moveShape ${Math.random() * 3 + 3}s ease-in-out infinite`;
+
+            document.body.appendChild(shape);          
+        }
+
+        const numShapes = 30;
+        const shapes = ['heart', 'star', 'diamond', 'circle', 'square', 'triangle'];
+
+        for (let i = 0; i < numShapes; i++) {
+            const shapeType = shapes[Math.floor(Math.random() * shapes.length)];
+            createShape(shapeType);
+        }
+
+        function createRandomText(text) {
+            const newText = document.createElement('div');
+            newText.classList.add('randomText');
+            newText.textContent = text;
+            newText.style.left = Math.random() * window.innerWidth + 'px';
+            newText.style.top = Math.random() * window.innerHeight + 'px';
+            document.body.appendChild(newText);
+        }
+
+        const texts = [' baby ', ' pls'];
+        setInterval(() => {
+            const randomText = texts[Math.floor(Math.random() * texts.length)];
+            createRandomText(randomText);
+        }, 500);
+    </script>
+</body>
+</html>
